@@ -1,0 +1,7 @@
+#stamp-button{
+  display: inline-block;
+  margin: 1.2em 0em 0em 0em;
+    background: gray;/*ボタン色*/
+    color: pink;/*ボタン色より暗く*/
+    border-radius: 3px;
+  }
