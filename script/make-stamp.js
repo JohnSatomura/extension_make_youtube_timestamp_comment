@@ -2,7 +2,7 @@ console.log("kokosuki : Start");
 var wasWrittenFlag = false;
 console.log("wasWrittenFlag:" + wasWrittenFlag.toString());
 $("#container > #info > #menu-container").before("<div><button id=\"stamp-button\">❤</button></div>");
-
+console.log("kokosuki : made element");
 
 //17 : control 81 : q 121 F10 F7,8,9あたりは空いてそう
 var map = {17: false, 81: false, 121: false};
@@ -13,7 +13,7 @@ $(document).keydown(function(e) {
         if (map[17] && map[81]) {
             write_comment_play_time();
         }else if(map[121]){
-            write_comment_play_time();            
+            write_comment_play_time();
         }
     }
 }).keyup(function(e) {
@@ -27,7 +27,7 @@ function zeroPadding(num,length){
 }
 
 function write_comment_play_time(){
-    console.log("wasWrittenFlag Play :" + wasWrittenFlag.toString());
+    //console.log("wasWrittenFlag Play :" + wasWrittenFlag.toString());
     var getCurrentTime = document.getElementsByTagName("video");
     var currentTime = getCurrentTime[0].currentTime;//get second display -> 2min : output -> 120sec
     
@@ -52,11 +52,12 @@ $('#stamp-button').on('click', function(){
     //console.log(location.href);
 });
 
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
-    let selection;
+// popup との通信用
+// chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
+//     let selection;
   
-    getComment = document.getElementById("contenteditable-root").innerText;
-    title = document.getElementsByClassName('title style-scope ytd-video-primary-info-renderer')[0].innerText;
-    var SendData = { "title" : title, "comment" : getComment};
-    sendResponse(SendData);
-  });
+//     getComment = document.getElementById("contenteditable-root").innerText;
+//     title = document.getElementsByClassName('title style-scope ytd-video-primary-info-renderer')[0].innerText;
+//     var SendData = { "title" : title, "comment" : getComment};
+//     sendResponse(SendData);
+//   });

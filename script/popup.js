@@ -47,13 +47,6 @@ $('#copy').on('click', function(){
     //   });
     // });
 
-    //ローカルストレージから取得して書き込めるか
-    chrome.storage.local.get(jsonData, function (value) {
-        var printData = jsonData;
-        console.log(printData)
-    });
-    
-    alert
   });
 
 $('#clear').on('click', function(){
