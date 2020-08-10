@@ -1,8 +1,20 @@
 console.log("kokosuki : Start");
 var wasWrittenFlag = false;
 console.log("wasWrittenFlag:" + wasWrittenFlag.toString());
-$("#container > #info > #menu-container").before("<div><button id=\"stamp-button\">❤</button></div>");
-console.log("kokosuki : made element");
+
+window.addEventListener('yt-navigate-start', process);
+
+if (document.body) process();
+else document.addEventListener('DOMContentLoaded', process);
+
+function process() {
+    console.log("kokosuki : process");
+    $("#stamp-button").remove();
+    $("#menu-container").before("<div><button id=\"stamp-button\">❤</button></div>");
+    
+    console.log("kokosuki : make element");
+    
+}
 
 //17 : control 81 : q 121 F10 F7,8,9あたりは空いてそう
 var map = {17: false, 81: false, 121: false};
@@ -49,15 +61,15 @@ function write_comment_play_time(){
 
 $('#stamp-button').on('click', function(){
     write_comment_play_time();
-    //console.log(location.href);
+    //alert(location.href);
 });
 
-// popup との通信用
-// chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
-//     let selection;
+// // popup との通信用
+// // chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
+// //     let selection;
   
-//     getComment = document.getElementById("contenteditable-root").innerText;
-//     title = document.getElementsByClassName('title style-scope ytd-video-primary-info-renderer')[0].innerText;
-//     var SendData = { "title" : title, "comment" : getComment};
-//     sendResponse(SendData);
-//   });
+// //     getComment = document.getElementById("contenteditable-root").innerText;
+// //     title = document.getElementsByClassName('title style-scope ytd-video-primary-info-renderer')[0].innerText;
+// //     var SendData = { "title" : title, "comment" : getComment};
+// //     sendResponse(SendData);
+// //   });
