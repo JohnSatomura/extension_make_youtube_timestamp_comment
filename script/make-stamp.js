@@ -1,6 +1,4 @@
 console.log("kokosuki : Start");
-var wasWrittenFlag = false;
-console.log("wasWrittenFlag:" + wasWrittenFlag.toString());
 
 // url 変更毎に実行
 window.addEventListener('yt-navigate-start', process);
@@ -13,9 +11,12 @@ function process() {
     console.log("kokosuki : process");
     $("#stamp-button").remove();
     $("#menu-container").before("<div><button id=\"stamp-button\">❤</button></div>");
-    wasWrittenFlag = false;
-    console.log("kokosuki : make element");
     
+    $('#stamp-button').on('click', function(){
+        console.log("button Click");
+        write_comment_play_time();
+        //alert(location.href);
+    });
 }
 
 //17 : control 81 : q 121 F10 F7,8,9あたりは空いてそう
@@ -49,28 +50,18 @@ function write_comment_play_time(){
     var min = zeroPadding(parseInt(Math.floor(currentTime)/60)%60, 2);
     var sec = zeroPadding(parseInt(Math.floor(currentTime))%60, 2);
     document.getElementById("simplebox-placeholder").click(); //なければ都バス
-    var newLine = (!wasWrittenFlag) ? "" : "\n";
+    
     var previousComment = document.getElementById("contenteditable-root").innerText;
-
+    var newLine =  (previousComment=="") ? "" : "\n";
     // decide insert comment 
     var insertComment = (hour == "00") ? previousComment + newLine + min + ":" + sec + " : " : previousComment + newLine + hour  + ":"  + min + ":" + sec + " : ";
     document.getElementById("contenteditable-root").innerHTML = insertComment;
     
     //毎回 コメントを保存しいて
     //popup に表示する、不要になれば削除ボタン
-    // chrome.storage.local.set(
-    //     {
-    //       "comment": insertComment
-    //     }
-    //   );
-    
-    wasWrittenFlag = true;
 }
 
-$('#stamp-button').on('click', function(){
-    write_comment_play_time();
-    //alert(location.href);
-});
+
 
 // // popup との通信用
 // // chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
