@@ -64,14 +64,3 @@ function write_comment_play_time(){
     //popup に表示する、不要になれば削除ボタン
 }
 
-
-
-// // popup との通信用
-// // chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
-// //     let selection;
-  
-// //     getComment = document.getElementById("contenteditable-root").innerText;
-// //     title = document.getElementsByClassName('title style-scope ytd-video-primary-info-renderer')[0].innerText;
-// //     var SendData = { "title" : title, "comment" : getComment};
-// //     sendResponse(SendData);
-// //   });
