@@ -59,8 +59,11 @@ function write_comment_play_time(){
     var insertComment = (hour == "00") ? previousComment + newLine + min + ":" + sec + " : " : previousComment + newLine + hour  + ":"  + min + ":" + sec + " : ";
     document.getElementById("contenteditable-root").innerHTML = insertComment;
     
-    //todo
-    //毎回 コメントを保存しいて
-    //popup に表示する、不要になれば削除ボタン
 }
+
+//todo
+//毎回 コメントを保存しいて
+//popup に表示する、不要になれば削除ボタン
+//入力中のコメントにジャンプ機能がほしい -> 主コメに挿入? 
+//ジャンプは、主コメと一般コメントしか機能しない(普通)?
 
