@@ -1,5 +1,6 @@
 console.log("kokosuki : Start");
-
+var processTimeArray = [];
+var displayTimeArray= [];
 // url Run on every change
 window.addEventListener('yt-navigate-start', process);
 
@@ -20,18 +21,21 @@ function process() {
     });
 }
 
-//17 : control 81 : q 121 F10 F7,8,9
-var map = {121: false};
+//control:17, q:81, F10:121, F7,F8,F9:120
+var map = {119:false, 121: false};
 $(document).keydown(function(e) {
-    keycheck(e);
+    key_check(e);
 }).keyup(function(e) {
-    keycheck(e);
+    key_check(e);
 });
 
-function keycheck(e){
+function key_check(e){
     if (e.keyCode in map) {
         map[e.keyCode] = true;
-        if(map[121]){//swtch more better  ?
+        if(map[119]){//swtch more better  ?
+            insert_uploader_comment();
+            map[119] = false;
+        }else if(map[121]){
             write_comment_play_time();
             map[121] = false;
         }
@@ -39,7 +43,7 @@ function keycheck(e){
 }
 
 // zero fill input, fillspace
-function zeroPadding(num,length){
+function zero_padding(num,length){
     return ('0000000000' + num).slice(-length);
 }
 
@@ -47,23 +51,36 @@ function write_comment_play_time(){
     //console.log("wasWrittenFlag Play :" + wasWrittenFlag.toString());
     var getCurrentTime = document.getElementsByTagName("video");
     var currentTime = getCurrentTime[0].currentTime;//get second display -> 2min : output -> 120sec
-    var hour = zeroPadding(parseInt(Math.floor(currentTime)/60/60), 2);
-    var min = zeroPadding(parseInt(Math.floor(currentTime)/60)%60, 2);
-    var sec = zeroPadding(parseInt(Math.floor(currentTime))%60, 2);
+    var hour = zero_padding(parseInt(Math.floor(currentTime)/60/60), 2);
+    var min = zero_padding(parseInt(Math.floor(currentTime)/60)%60, 2);
+    var sec = zero_padding(parseInt(Math.floor(currentTime))%60, 2);
     document.getElementById("simplebox-placeholder").click(); //なければ都バス
-    
     
     var previousComment = document.getElementById("contenteditable-root").innerText;
     var newLine =  (previousComment=="") ? "" : "\n";
+    var insertComment = (hour == "00") ? min + ":" + sec + " : " : hour  + ":"  + min + ":" + sec + "";
+
+    processTimeArray.push(Math.floor(currentTime));
+    displayTimeArray.push(insertComment); 
+
+    insertComment = previousComment + newLine + insertComment;
     // decide insert comment 
-    var insertComment = (hour == "00") ? previousComment + newLine + min + ":" + sec + " : " : previousComment + newLine + hour  + ":"  + min + ":" + sec + " : ";
     document.getElementById("contenteditable-root").innerHTML = insertComment;
     
 }
 
+//入力中のコメントにジャンプ機能がほしい -> 主コメに挿入? 
+//ジャンプは、主コメと一般コメントしか機能しない(たぶん)?
+function insert_uploader_comment(){
+    //$('div#description').append("<p>test</p>");
+    for(let i=0;i<processTimeArray.length;i++){
+        //ページの再読み込みがおこるため target に blank を指定して別タブで開くようにしています。
+        $('div#description').append("<a target=\"_blank\" class=\"yt-simple-endpoint style-scope yt-formatted-string\" spellcheck=\"false\"  href=\""+location.pathname+location.search +"&t="+processTimeArray[i]+"s\"dir=\"auto\">"+displayTimeArray[i]+"</a>");
+    }
+    //<a>で location.href + &t=xxs
+}
 //todo
 //毎回 コメントを保存しいて
 //popup に表示する、不要になれば削除ボタン
-//入力中のコメントにジャンプ機能がほしい -> 主コメに挿入? 
-//ジャンプは、主コメと一般コメントしか機能しない(普通)?
+
 
