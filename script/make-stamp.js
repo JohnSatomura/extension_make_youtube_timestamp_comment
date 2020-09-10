@@ -21,8 +21,8 @@ function process() {
     });
 }
 
-//control:17, q:81, F10:121, F7,F8,F9:120
-var map = {119:false, 121: false};
+//control:17, q:81, F10:121, F7:118,F8:119,F9:120
+var map = {119:false, 120:false, 121: false};
 $(document).keydown(function(e) {
     key_check(e);
 }).keyup(function(e) {
@@ -35,6 +35,9 @@ function key_check(e){
         if(map[119]){//swtch more better  ?
             insert_uploader_comment();
             map[119] = false;
+        }else if(map[120]){
+            send_comment();
+            map[120] = false;
         }else if(map[121]){
             write_comment_play_time();
             map[121] = false;
@@ -69,18 +72,14 @@ function write_comment_play_time(){
     
 }
 
-//入力中のコメントにジャンプ機能がほしい -> 主コメに挿入? 
-//ジャンプは、主コメと一般コメントしか機能しない(たぶん)?
-function insert_uploader_comment(){
-    //$('div#description').append("<p>test</p>");
-    for(let i=0;i<processTimeArray.length;i++){
-        //ページの再読み込みがおこるため target に blank を指定して別タブで開くようにしています。
-        $('div#description').append("<a target=\"_blank\" class=\"yt-simple-endpoint style-scope yt-formatted-string\" spellcheck=\"false\"  href=\""+location.pathname+location.search +"&t="+processTimeArray[i]+"s\"dir=\"auto\">"+displayTimeArray[i]+"</a>");
-    }
-    //<a>で location.href + &t=xxs
+function send_comment(){
+    console.log("send comment");
+    document.getElementById("submit-button").click();
 }
+ 
 //todo
 //毎回 コメントを保存しいて
+//入力中のコメントにジャンプ機能がほしい -> 主コメに挿入?
 //popup に表示する、不要になれば削除ボタン
-
+//入力中のコメントがほぞんできるようにしたい
 
