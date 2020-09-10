@@ -5,14 +5,23 @@ var displayTimeArray= [];
 window.addEventListener('yt-navigate-start', process);
 
 if (document.body) process();
-else document.addEventListener('DOMContentLoaded', process);
-
+// else document.addEventListener('DOMContentLoaded', process);
+else document.addEventListener('Load', process);
 
 function process() {
-    console.log("kokosuki : process");
+    console.log("kokosuki : reload");
     $("#stamp-button").remove();
     $("#menu-container").before("<div><button id=\"stamp-button\">❤</button></div>");
     
+
+    // 前回と現在のタイトルとコメントを保存
+    // 再読み込み時 or リロード時 に現在を前回に書き換える
+    var title = $(document).attr('title');
+    chrome.storage.local.get(['current_comment'], function (value) {
+        console.log("再生時間 \n" + value.current_comment);
+        chrome.storage.local.set({"previous_comment" : value.current_comment}, function () {});
+      });
+
     // Is the position of the function correct?
     $('#stamp-button').on('click', function(){
         console.log("button Click");
@@ -21,19 +30,13 @@ function process() {
     });
 }
 
-//control:17, q:81, F10:121, F7:118,F8:119,F9:120
+//control:17, q:81, , F7:118, F8:119, F9:120, F10:121
 var map = {119:false, 120:false, 121: false};
 $(document).keydown(function(e) {
-    key_check(e);
-}).keyup(function(e) {
-    key_check(e);
-});
-
-function key_check(e){
     if (e.keyCode in map) {
         map[e.keyCode] = true;
         if(map[119]){//swtch more better  ?
-            insert_uploader_comment();
+            redisplay_comment();
             map[119] = false;
         }else if(map[120]){
             send_comment();
@@ -43,6 +46,18 @@ function key_check(e){
             map[121] = false;
         }
     }
+}).keyup(function(e) {
+    if (e.keyCode in map) {
+        map[e.keyCode] = true;
+        if(map[121]){
+            write_comment_play_time();
+            map[121] = false;
+        }
+    }
+});
+
+function key_check(e){
+    
 }
 
 // zero fill input, fillspace
@@ -63,20 +78,19 @@ function write_comment_play_time(){
     var newLine =  (previousComment=="") ? "" : "\n";
     var insertComment = (hour == "00") ? min + ":" + sec + " : " : hour  + ":"  + min + ":" + sec + "";
 
-    processTimeArray.push(Math.floor(currentTime));
-    displayTimeArray.push(insertComment); 
-
     insertComment = previousComment + newLine + insertComment;
     // decide insert comment 
     document.getElementById("contenteditable-root").innerHTML = insertComment;
     
+    // save insert comment
+    chrome.storage.local.set({"current_comment" : insertComment}, function () {});
 }
 
 function send_comment(){
-    console.log("send comment");
     document.getElementById("submit-button").click();
 }
- 
+
+
 //todo
 //毎回 コメントを保存しいて
 //入力中のコメントにジャンプ機能がほしい -> 主コメに挿入?
